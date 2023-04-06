@@ -16,7 +16,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/meetpoint").then(
   }
 );
 
-app.use(cors({ origin: "http://localhost:5173/meetups" }));
+app.use(cors({ origin: "http://localhost:5173/" }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -39,6 +39,18 @@ app.get("/group/:groupId", async (req, res) => {
   const groupId = req.params.groupId;
   const group = await Group.findById(groupId);
   res.send(group);
+});
+
+app.put("/group/:groupId", async (req, res) => {
+  const groupId = req.params.groupId;
+  const { title, owner, description, location } = req.body;
+  await Group.findByIdAndUpdate(groupId, {
+    title,
+    owner,
+    description,
+    location,
+  });
+  res.status(200).send();
 });
 
 app.listen(port, () => {

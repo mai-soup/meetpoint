@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import ViewGroup from "./routes/ViewGroup.js";
 import axios from "axios";
+import EditGroup from "./routes/EditGroup.js";
 
 axios.defaults.baseURL = "http://localhost:8888";
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
     element: <GroupList />,
   },
   { path: "/group/:groupId", element: <ViewGroup /> },
+  { path: "/group/:groupId/edit", element: <EditGroup /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
