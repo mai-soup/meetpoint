@@ -18,7 +18,7 @@ const CreateGroup = () => {
       .post("/groups/new", formData)
       .then(res => res.data)
       .then(id => {
-        navigate(`/group/${id}`);
+        navigate(`/groups/${id}`);
       });
   };
 

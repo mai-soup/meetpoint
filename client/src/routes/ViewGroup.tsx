@@ -29,7 +29,6 @@ const ViewGroup = () => {
 
   return (
     <div>
-      {" "}
       {group ? (
         <>
           <h1>{group.title}</h1> <h2>{group.owner}</h2>

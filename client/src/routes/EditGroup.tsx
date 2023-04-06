@@ -33,7 +33,7 @@ const EditGroup = () => {
   const handleSubmission = (evt: React.FormEvent) => {
     evt.preventDefault();
     axios.put(`/group/${groupId}`, formData).then(() => {
-      navigate(`/group/${groupId}`);
+      navigate(`/groups/${groupId}`);
     });
   };
 
