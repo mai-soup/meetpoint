@@ -8,7 +8,7 @@ const GroupList = () => {
 
   const createGroupList = () => {
     return groups.map((g: Group) => (
-      <li>
+      <li key={g._id}>
         <Link to={`/group/${g._id}`}>{`${g.title}, ${g.owner}`}</Link>
       </li>
     ));
