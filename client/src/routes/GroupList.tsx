@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
-
-type Group = {
-  title: string;
-  description: string;
-  owner: string;
-};
+import Group from "../types/Group";
 
 const GroupList = () => {
   const [groups, setGroups] = useState([]);
 
   const createGroupList = () => {
-    return groups.map((g: Group) => <li>{`${g.title}, ${g.owner}`}</li>);
+    return groups.map((g: Group) => (
+      <li>
+        <Link to={`/group/${g._id}`}>{`${g.title}, ${g.owner}`}</Link>
+      </li>
+    ));
   };
 
   useEffect(() => {
     axios
-      .get("http://localhost:8888/groups")
+      .get("/groups")
       .then(res => res.data)
       .then(data => setGroups(data))
       .catch(e => {

@@ -27,6 +27,12 @@ app.get("/groups", async (req, res) => {
   res.send(JSON.stringify(groups));
 });
 
+app.get("/group/:groupId", async (req, res) => {
+  const groupId = req.params.groupId;
+  const group = await Group.findById(groupId);
+  res.send(group);
+});
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
