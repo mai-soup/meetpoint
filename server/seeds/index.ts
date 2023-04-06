@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import cities from "./cities";
 import { descriptors, nouns } from "./seedHelpers";
-import Meetup from "../models/Meetup";
+import Group from "../models/Group";
 import { loremIpsum } from "lorem-ipsum";
 
 mongoose.connect("mongodb://127.0.0.1:27017/meetpoint");
@@ -18,20 +18,22 @@ const sample = (arr: string[]): string => {
 };
 
 const seedDB = async () => {
-  await Meetup.deleteMany({}); // delete all meetups
+  await Group.deleteMany({}); // delete all groups
   for (let i = 0; i < 50; i++) {
     const random1000 = Math.floor(Math.random() * 1000);
-    // const locationString = `${cities[random1000].city}, ${cities[random1000].state}`;
-    // const coords = [cities[random1000].longitude, cities[random1000].latitude];
-    const m = new Meetup({
+    const locationString = `${cities[random1000].city}, ${cities[random1000].state}`;
+    const coords = [cities[random1000].longitude, cities[random1000].latitude];
+    const g = new Group({
       title: `${sample(descriptors)} ${sample(nouns)}`,
       description: loremIpsum({
         sentenceLowerBound: 5,
         sentenceUpperBound: 30,
       }),
-      author: loremIpsum({ count: 2, units: "words" }),
+      owner: loremIpsum({ count: 2, units: "words" }),
+      location: locationString,
+      coordinates: coords,
     });
-    await m.save();
+    await g.save();
   }
 };
 

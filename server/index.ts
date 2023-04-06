@@ -1,6 +1,6 @@
 import express, { Express } from "express";
 import mongoose from "mongoose";
-import Meetup from "./models/Meetup";
+import Group from "./models/Group";
 import cors from "cors";
 
 const port = process.env.PORT || 8888;
@@ -22,9 +22,9 @@ app.get("/", (req, res) => {
   res.send("HEYO FROM EXPRESS");
 });
 
-app.get("/meetups", async (req, res) => {
-  const meetups = await Meetup.find({});
-  res.send(JSON.stringify(meetups));
+app.get("/groups", async (req, res) => {
+  const groups = await Group.find({});
+  res.send(JSON.stringify(groups));
 });
 
 app.listen(port, () => {

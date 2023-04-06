@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import LandingPage from "./routes/LandingPage.js";
-import CreateMeetup from "./routes/CreateMeetup.js";
-import MeetupList from "./routes/MeetupList.js";
+import CreateGroup from "./routes/CreateGroup.js";
+import GroupList from "./routes/GroupList.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
@@ -12,12 +12,12 @@ const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: "/createmeetup",
-    element: <CreateMeetup />,
+    path: "/creategroup",
+    element: <CreateGroup />,
   },
   {
-    path: "/meetups",
-    element: <MeetupList />,
+    path: "/groups",
+    element: <GroupList />,
   },
 ]);
 
