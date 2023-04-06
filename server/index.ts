@@ -1,6 +1,7 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import mongoose from "mongoose";
 import Meetup from "./models/Meetup";
+import cors from "cors";
 
 const port = process.env.PORT || 8888;
 
@@ -15,8 +16,15 @@ mongoose.connect("mongodb://127.0.0.1:27017/meetpoint").then(
   }
 );
 
-app.get("/", (req: Request, res: Response) => {
+app.use(cors({ origin: "http://localhost:5173/meetups" }));
+
+app.get("/", (req, res) => {
   res.send("HEYO FROM EXPRESS");
+});
+
+app.get("/meetups", async (req, res) => {
+  const meetups = await Meetup.find({});
+  res.send(JSON.stringify(meetups));
 });
 
 app.listen(port, () => {
