@@ -13,7 +13,7 @@ export default {
         "orange-muted": "#eb5e28",
       },
       fontFamily: {
-        sans: ["Sora", ...defaultTheme.fontFamily.sans],
+        sans: ["Merriweather Sans", ...defaultTheme.fontFamily.sans],
       },
     },
   },
