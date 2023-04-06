@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
 import Group from "../types/Group";
 
 const ViewGroup = () => {
   const [group, setGroup] = useState<Group | undefined>(undefined);
   const { groupId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -18,6 +20,13 @@ const ViewGroup = () => {
         console.error("REQUEST ERROR:", e.message);
       });
   }, []);
+
+  const handleDeletion = () => {
+    axios.delete(`/group/${groupId}`).then(() => {
+      navigate("/groups");
+    });
+  };
+
   return (
     <div>
       {" "}
@@ -29,6 +38,8 @@ const ViewGroup = () => {
       ) : (
         <h1>Loading...</h1>
       )}
+      <button onClick={handleDeletion}>Delete</button>
+      <Link to="/groups">Back to list</Link>
     </div>
   );
 };

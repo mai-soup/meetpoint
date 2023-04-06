@@ -53,6 +53,12 @@ app.put("/group/:groupId", async (req, res) => {
   res.status(200).send();
 });
 
+app.delete("/group/:groupId", async (req, res) => {
+  const groupId = req.params.groupId;
+  await Group.findByIdAndDelete(groupId);
+  res.status(200).send();
+});
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
