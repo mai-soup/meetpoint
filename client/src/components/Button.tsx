@@ -4,6 +4,7 @@ type ButtonProps = {
   children: ReactNode;
   submit?: boolean;
   secondary?: boolean;
+  tertiary?: boolean;
   onClick?: VoidFunction;
 };
 
@@ -11,6 +12,7 @@ const Button: FC<ButtonProps> = ({
   children,
   submit = false,
   secondary = false,
+  tertiary = false,
   onClick,
 }) => {
   return (
@@ -20,6 +22,8 @@ const Button: FC<ButtonProps> = ({
       className={`uppercase rounded-full font-bold p-2 px-8 hover:opacity-90 active:opacity-80 ${
         secondary
           ? "border border-orange-muted text-orange-muted"
+          : tertiary
+          ? "text-orange-muted"
           : "bg-orange-muted"
       }`}
     >

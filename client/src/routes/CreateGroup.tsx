@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import Button from "../components/Button";
 
 const CreateGroup = () => {
   const [formData, setFormData] = useState({
@@ -24,8 +25,8 @@ const CreateGroup = () => {
 
   return (
     <div>
-      <h1>Add a group</h1>
-      <form onSubmit={handleSubmission}>
+      <h1>Create Group</h1>
+      <form onSubmit={handleSubmission} className="my-4">
         <label>
           Title
           <input
@@ -33,6 +34,7 @@ const CreateGroup = () => {
             name="title"
             id="title"
             value={formData.title}
+            className="reset"
             onChange={e => {
               setFormData(oldData => ({ ...oldData, title: e.target.value }));
             }}
@@ -45,6 +47,7 @@ const CreateGroup = () => {
             name="description"
             id="description"
             value={formData.description}
+            className="reset"
             onChange={e => {
               setFormData(oldData => ({
                 ...oldData,
@@ -60,6 +63,7 @@ const CreateGroup = () => {
             name="location"
             id="location"
             value={formData.location}
+            className="reset"
             onChange={e => {
               setFormData(oldData => ({
                 ...oldData,
@@ -75,6 +79,7 @@ const CreateGroup = () => {
             name="owner"
             id="owner"
             value={formData.owner}
+            className="reset"
             onChange={e => {
               setFormData(oldData => ({
                 ...oldData,
@@ -83,7 +88,7 @@ const CreateGroup = () => {
             }}
           />
         </label>
-        <button type="submit">Submit</button>
+        <Button submit>Submit</Button>
       </form>
     </div>
   );

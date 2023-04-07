@@ -83,9 +83,17 @@ const ViewGroup = () => {
             </div>
             <Button>Join</Button>
           </div>
-          <Button onClick={handleDeletion} secondary>
-            Delete
-          </Button>
+          <div className="flex flex-row justify-between items-center pt-2">
+            <Button onClick={handleDeletion} tertiary>
+              Delete
+            </Button>
+            <Button
+              onClick={() => navigate(`/groups/${groupId}/edit`)}
+              secondary
+            >
+              Edit
+            </Button>
+          </div>
         </Card>
       ) : (
         <h1>Loading...</h1>
