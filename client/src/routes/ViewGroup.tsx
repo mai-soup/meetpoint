@@ -83,12 +83,13 @@ const ViewGroup = () => {
             </div>
             <Button>Join</Button>
           </div>
+          <Button onClick={handleDeletion} secondary>
+            Delete
+          </Button>
         </Card>
       ) : (
         <h1>Loading...</h1>
       )}
-      {/* <button onClick={handleDeletion}>Delete</button>
-      <Link to="/groups">Back to list</Link> */}
     </>
   );
 };
