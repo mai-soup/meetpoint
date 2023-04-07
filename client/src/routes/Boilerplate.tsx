@@ -1,15 +1,18 @@
 import { Outlet } from "react-router";
+import { Link } from "react-router-dom";
 
 const Boilerplate = () => {
   return (
     <div className="flex flex-col items-center text-off-white bg-darkest-grey h-full min-h-screen">
       <header className="bg-dark-grey py-4 px-4 flex flex-row justify-between w-full">
-        <span className="text-2xl font-bold">
-          MeetPoint
-          <span className="text-orange-muted">.</span>
-        </span>
+        <Link to="/groups">
+          <span className="text-2xl font-bold">
+            MeetPoint
+            <span className="text-orange-muted">.</span>
+          </span>
+        </Link>
       </header>
-      <div className="grow w-5/6 text-center my-4">
+      <div className="grow w-5/6 my-4 flex flex-col items-center">
         <Outlet />
       </div>
       <footer className="bg-dark-grey flex flex-row justify-center items-center py-4 w-full">
