@@ -1,106 +1,56 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import Button from "../components/Button";
+import GroupFormData from "../types/GroupFormData";
 
 const EditGroup = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    location: "",
-    owner: "",
+  const { register, handleSubmit } = useForm<GroupFormData>({
+    defaultValues: async () =>
+      axios.get(`/group/${groupId}`).then(res => res.data),
   });
-  const { groupId } = useParams();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    axios
-      .get(`/group/${groupId}`)
-      .then(res => res.data)
-      .then(data => {
-        setFormData(data);
-      })
-      .catch(err => {
-        if (err.response) {
-          console.error(err.response.data);
-          console.error(err.response.status);
-          console.error(err.response.headers);
-        } else {
-          console.error(err);
-        }
-      });
-  }, []);
-
-  const handleSubmission = (evt: React.FormEvent) => {
-    evt.preventDefault();
-    axios.put(`/group/${groupId}`, formData).then(() => {
+  const onSubmit = (data: GroupFormData) => {
+    axios.put(`/group/${groupId}`, data).then(() => {
       navigate(`/groups/${groupId}`);
     });
   };
+  const { groupId } = useParams();
+  const navigate = useNavigate();
 
   return (
     <div>
       <h1>Edit a group</h1>
-      <form onSubmit={handleSubmission} className="my-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="my-4">
         <label>
           Title
           <input
             type="text"
-            name="title"
-            id="title"
-            value={formData.title}
+            {...register("title", { required: true })}
             className="reset"
-            onChange={e => {
-              setFormData(oldData => ({ ...oldData, title: e.target.value }));
-            }}
           />
         </label>
         <label>
           Description
           <input
             type="text"
-            name="description"
-            id="description"
-            value={formData.description}
+            {...register("description", { required: true })}
             className="reset"
-            onChange={e => {
-              setFormData(oldData => ({
-                ...oldData,
-                description: e.target.value,
-              }));
-            }}
           />
         </label>
         <label>
           Location
           <input
             type="text"
-            name="location"
-            id="location"
-            value={formData.location}
+            {...register("location", { required: true })}
             className="reset"
-            onChange={e => {
-              setFormData(oldData => ({
-                ...oldData,
-                location: e.target.value,
-              }));
-            }}
           />
         </label>
         <label>
           Owner
           <input
             type="text"
-            name="owner"
-            id="owner"
-            value={formData.owner}
+            {...register("owner", { required: true })}
             className="reset"
-            onChange={e => {
-              setFormData(oldData => ({
-                ...oldData,
-                owner: e.target.value,
-              }));
-            }}
           />
         </label>
         <Button submit>Submit</Button>
