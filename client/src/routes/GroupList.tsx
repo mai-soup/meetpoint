@@ -2,15 +2,20 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Group from "../types/Group";
+import GroupListItem from "../components/GroupListItem";
 
 const GroupList = () => {
   const [groups, setGroups] = useState([]);
 
   const createGroupList = () => {
     return groups.map((g: Group) => (
-      <li key={g._id}>
-        <Link to={`/groups/${g._id}`}>{`${g.title}, ${g.owner}`}</Link>
-      </li>
+      <GroupListItem
+        key={g._id}
+        title={g.title}
+        owner={g.owner}
+        location={g.location}
+        id={g._id}
+      />
     ));
   };
 
@@ -25,12 +30,8 @@ const GroupList = () => {
   }, []);
 
   return (
-    <div>
-      {groups.length == 0 ? (
-        <p>Loading data...</p>
-      ) : (
-        <ul>{createGroupList()}</ul>
-      )}
+    <div className="w-full flex flex-col items-center justify-center">
+      {groups.length == 0 ? <p>Loading data...</p> : createGroupList()}
     </div>
   );
 };
