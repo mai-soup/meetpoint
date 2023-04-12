@@ -29,3 +29,34 @@ const tagValidationSchema = Joi.object({
     name: Joi.string().required().escapeHTML(),
   }).required(),
 });
+
+const meetupValidationSchema = Joi.object({
+  meetup: Joi.object({
+    title: Joi.string().required().escapeHTML(),
+    group: Joi.string().required().escapeHTML(),
+    description: Joi.string().required().escapeHTML(),
+    happeningOn: Joi.date().required().escapeHTML(),
+    location: Joi.string().required().escapeHTML(),
+    isOnline: Joi.boolean().falsy(),
+    tags: Joi.array().items(Joi.string().escapeHTML()),
+  }).required(),
+});
+
+const groupValidationSchema = Joi.object({
+  group: Joi.object({
+    title: Joi.string().required().escapeHTML(),
+    owner: Joi.string().required().escapeHTML(),
+    description: Joi.string().required().escapeHTML(),
+    location: Joi.string().required().escapeHTML(),
+    isPrivate: Joi.boolean().falsy(),
+    tags: Joi.array().items(Joi.string().escapeHTML()),
+  }).required(),
+});
+
+const userValidationSchema = Joi.object({
+  user: Joi.object({
+    username: Joi.string().required().escapeHTML(),
+    displayName: Joi.string().required().escapeHTML(),
+    password: Joi.string().required().escapeHTML(),
+  }).required(),
+});
