@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import Tag from "./Tag";
 import User from "./User";
-import Image from "./Image";
+import ImageSchema from "./ImageSchema";
 const { Schema, SchemaTypes } = mongoose;
 
 const groupSchema = new Schema({
@@ -18,16 +17,31 @@ const groupSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  tags: [Tag],
-  members: [User],
-  pendingMembers: [User],
+  tags: [
+    {
+      type: SchemaTypes.ObjectId,
+      ref: "Tag",
+    },
+  ],
+  members: [
+    {
+      type: SchemaTypes.ObjectId,
+      ref: "User",
+    },
+  ],
+  pendingMembers: [
+    {
+      type: SchemaTypes.ObjectId,
+      ref: "User",
+    },
+  ],
   meetups: [
     {
       type: SchemaTypes.ObjectId,
       ref: "Meetup",
     },
   ],
-  logo: Image,
+  logo: ImageSchema,
 });
 
 const Group = mongoose.model("Group", groupSchema);

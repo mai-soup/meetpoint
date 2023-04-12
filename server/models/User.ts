@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
-import Image from "./Image";
+import ImageSchema from "./ImageSchema";
 const { Schema, SchemaTypes } = mongoose;
+import passportLocalMongoose from "passport-local-mongoose";
 
 const userSchema = new Schema({
   username: {
@@ -43,10 +44,11 @@ const userSchema = new Schema({
       type: [Number],
       required: true,
     },
-    required: false,
   },
-  avatar: Image,
+  avatar: ImageSchema,
 });
+
+userSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.model("User", userSchema);
 export default User;

@@ -24,25 +24,25 @@ const extension: BaseJoi.ExtensionFactory = joi => ({
 
 const Joi = BaseJoi.extend(extension);
 
-const tagValidationSchema = Joi.object({
+export const tagValidationSchema = Joi.object({
   tag: Joi.object({
     name: Joi.string().required().escapeHTML(),
   }).required(),
 });
 
-const meetupValidationSchema = Joi.object({
+export const meetupValidationSchema = Joi.object({
   meetup: Joi.object({
     title: Joi.string().required().escapeHTML(),
     group: Joi.string().required().escapeHTML(),
     description: Joi.string().required().escapeHTML(),
-    happeningOn: Joi.date().required().escapeHTML(),
+    happeningOn: Joi.date().required(),
     location: Joi.string().required().escapeHTML(),
     isOnline: Joi.boolean().falsy(),
     tags: Joi.array().items(Joi.string().escapeHTML()),
   }).required(),
 });
 
-const groupValidationSchema = Joi.object({
+export const groupValidationSchema = Joi.object({
   group: Joi.object({
     title: Joi.string().required().escapeHTML(),
     owner: Joi.string().required().escapeHTML(),
@@ -53,7 +53,7 @@ const groupValidationSchema = Joi.object({
   }).required(),
 });
 
-const userValidationSchema = Joi.object({
+export const userValidationSchema = Joi.object({
   user: Joi.object({
     username: Joi.string().required().escapeHTML(),
     displayName: Joi.string().required().escapeHTML(),

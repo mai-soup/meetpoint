@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Tag from "./Tag";
 import User from "./User";
-import Image from "./Image";
+import Image from "./ImageSchema";
 const { Schema, SchemaTypes } = mongoose;
 
 const meetupSchema = new Schema({
