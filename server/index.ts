@@ -119,6 +119,24 @@ app.post("/signup", userValidator, async (req, res, next) => {
   });
 });
 
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    // failureRedirect: "/login",
+    keepSessionInfo: true,
+  }),
+  async (req, res) => {
+    res.redirect("/groups");
+  }
+);
+
+app.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) return next(err);
+    res.redirect("/");
+  });
+});
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
