@@ -4,10 +4,6 @@ const { Schema, SchemaTypes } = mongoose;
 import passportLocalMongoose from "passport-local-mongoose";
 
 const userSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-  },
   displayName: String,
   joinedGroups: [
     {

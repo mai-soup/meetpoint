@@ -9,26 +9,34 @@ import ViewGroup from "./routes/ViewGroup.js";
 import axios from "axios";
 import EditGroup from "./routes/EditGroup.js";
 import Boilerplate from "./routes/Boilerplate.js";
+import Signup from "./routes/Signup.js";
+import Login from "./routes/Login.js";
 
 axios.defaults.baseURL = "http://localhost:8888";
+axios.defaults.withCredentials = true;
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
   },
-
   {
-    path: "/groups",
     element: <Boilerplate />,
     children: [
-      { path: "", element: <GroupList /> },
       {
-        path: "create",
-        element: <CreateGroup />,
+        path: "/groups",
+        element: <GroupList />,
+        children: [
+          {
+            path: "create",
+            element: <CreateGroup />,
+          },
+          { path: ":groupId", element: <ViewGroup /> },
+          { path: ":groupId/edit", element: <EditGroup /> },
+        ],
       },
-      { path: ":groupId", element: <ViewGroup /> },
-      { path: ":groupId/edit", element: <EditGroup /> },
+      { path: "/signup", element: <Signup /> },
+      { path: "/login", element: <Login /> },
     ],
   },
 ]);

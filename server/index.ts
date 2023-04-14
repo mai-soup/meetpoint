@@ -60,8 +60,19 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use(cors({ origin: "http://localhost:5173/", credentials: true }));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+declare global {
+  namespace Express {
+    interface User {
+      username: string;
+    }
+  }
+}
 
 app.get("/", (req, res) => {
   res.send("HEYO FROM EXPRESS");
@@ -122,11 +133,15 @@ app.post("/signup", userValidator, async (req, res, next) => {
 app.post(
   "/login",
   passport.authenticate("local", {
-    // failureRedirect: "/login",
     keepSessionInfo: true,
   }),
   async (req, res) => {
-    res.redirect("/groups");
+    console.log(req);
+    let username;
+    if (req.user) {
+      username = req.user.username;
+    }
+    res.send({ username });
   }
 );
 

@@ -56,7 +56,7 @@ export const groupValidationSchema = Joi.object({
 export const userValidationSchema = Joi.object({
   user: Joi.object({
     username: Joi.string().required().escapeHTML(),
-    displayName: Joi.string().required().escapeHTML(),
+    displayName: Joi.string().escapeHTML(),
     password: Joi.string().required().escapeHTML(),
   }).required(),
 });
