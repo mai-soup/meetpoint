@@ -27,15 +27,13 @@ const router = createBrowserRouter([
       {
         path: "/groups",
         element: <GroupList />,
-        children: [
-          {
-            path: "create",
-            element: <CreateGroup />,
-          },
-          { path: ":groupId", element: <ViewGroup /> },
-          { path: ":groupId/edit", element: <EditGroup /> },
-        ],
       },
+      {
+        path: "/groups/create",
+        element: <CreateGroup />,
+      },
+      { path: "/groups/:groupId/edit", element: <EditGroup /> },
+      { path: "/groups/:groupId", element: <ViewGroup /> },
       { path: "/signup", element: <Signup /> },
       { path: "/login", element: <Login /> },
     ],
