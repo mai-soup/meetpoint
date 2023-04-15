@@ -12,6 +12,7 @@ import Boilerplate from "./routes/Boilerplate.js";
 import Signup from "./routes/Signup.js";
 import Login from "./routes/Login.js";
 import { UsersProvider } from "./context/UsersContext.js";
+import LogOut from "./routes/LogOut.js";
 
 axios.defaults.baseURL = "http://localhost:8888";
 axios.defaults.withCredentials = true;
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "/groups/:groupId", element: <ViewGroup /> },
       { path: "/signup", element: <Signup /> },
       { path: "/login", element: <Login /> },
+      { path: "/logout", element: <LogOut /> },
     ],
   },
 ]);

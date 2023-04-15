@@ -32,8 +32,8 @@ function userReducer(user: User, action: UserAction): User {
   switch (action.type) {
     case "loggedIn": {
       return {
-        username: action.user.username,
-        displayName: action.user.displayName,
+        username: action.user!.username,
+        displayName: action.user!.displayName,
       };
     }
     case "loggedOut": {

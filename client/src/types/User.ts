@@ -5,5 +5,5 @@ export type User = {
 
 export type UserAction = {
   type: string;
-  user: User;
+  user?: User;
 };
