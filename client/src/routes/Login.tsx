@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
+import { useUsers, useUsersDispatch } from "../context/UsersContext";
 import axios from "axios";
 import Button from "../components/Button";
 import AuthFormData from "../types/AuthFormData";
@@ -11,6 +12,8 @@ const Login = () => {
       password: "",
     },
   });
+  const users = useUsers();
+  const dispatch = useUsersDispatch();
 
   const navigate = useNavigate();
 
@@ -20,6 +23,10 @@ const Login = () => {
       .then(res => res.data)
       .then(data => {
         console.log(data);
+        dispatch!({
+          type: "loggedIn",
+          user: { username: data.username, displayName: data.username },
+        });
         navigate(`/groups`);
       })
       .catch(e => {

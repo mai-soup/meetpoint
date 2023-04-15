@@ -11,6 +11,7 @@ import EditGroup from "./routes/EditGroup.js";
 import Boilerplate from "./routes/Boilerplate.js";
 import Signup from "./routes/Signup.js";
 import Login from "./routes/Login.js";
+import { UsersProvider } from "./context/UsersContext.js";
 
 axios.defaults.baseURL = "http://localhost:8888";
 axios.defaults.withCredentials = true;
@@ -43,6 +44,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UsersProvider>
+      <RouterProvider router={router} />
+    </UsersProvider>
   </React.StrictMode>
 );

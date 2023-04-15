@@ -61,8 +61,6 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -136,7 +134,6 @@ app.post(
     keepSessionInfo: true,
   }),
   async (req, res) => {
-    console.log(req);
     let username;
     if (req.user) {
       username = req.user.username;
