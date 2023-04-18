@@ -3,7 +3,14 @@ export type User = {
   displayName: string | null;
 };
 
-export type UserAction = {
-  type: string;
-  user?: User;
+export type LoggedInAction = {
+  type: "loggedIn";
+  user: User;
 };
+
+export type UserAction =
+  | LoggedInAction
+  | {
+      type: "loggedOut";
+      user?: null;
+    };
