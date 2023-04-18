@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 import express, { Express, NextFunction, Request, Response } from "express";
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import Group from "./models/Group";
 import cors from "cors";
 import session from "express-session";
@@ -69,6 +69,7 @@ declare global {
   namespace Express {
     interface User {
       username: string;
+      _id: ObjectId;
     }
   }
 }
@@ -88,8 +89,13 @@ app.get(
 app.post(
   "/groups/new",
   catchAsync(async (req: Request, res: Response) => {
-    const { title, owner, description, location } = req.body;
-    const g = new Group({ title, owner, description, location });
+    if (!req.user) {
+      return res.status(401).send("Unauthorised");
+    }
+
+    const { title, description, location } = req.body;
+    const owner = await User.findById(req.user._id);
+    const g = new Group({ title, description, location, owner });
     await g.save();
     res.send(g._id);
   })
@@ -142,8 +148,7 @@ app.post(
     req.login(newUser, err => {
       if (err) return next(err);
 
-      // req.flash("Welcome!");
-      return res.redirect("/groups");
+      return res.send({ username });
     });
   })
 );

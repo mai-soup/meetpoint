@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Button from "../components/Button";
 import AuthFormData from "../types/AuthFormData";
+import { useUsersDispatch } from "../context/UsersContext";
 
 const Signup = () => {
+  const dispatch = useUsersDispatch();
   const { register, handleSubmit } = useForm<AuthFormData>({
     defaultValues: {
       username: "",
@@ -18,7 +20,11 @@ const Signup = () => {
     axios
       .post(`/signup/`, { user: data })
       .then(res => res.data)
-      .then(() => {
+      .then(data => {
+        dispatch!({
+          type: "loggedIn",
+          user: { username: data.username, displayName: data.username },
+        });
         navigate(`/groups`);
       });
   };
