@@ -99,7 +99,7 @@ app.get(
   "/group/:groupId",
   catchAsync(async (req: Request, res: Response) => {
     const groupId = req.params.groupId;
-    const group = await Group.findById(groupId);
+    const group = await Group.findById(groupId).populate("owner");
     res.send(group);
   })
 );

@@ -1,7 +1,9 @@
+import { User } from "./User";
+
 type Group = {
   title: string;
   description: string;
-  owner: string;
+  owner: User;
   location: string;
   _id: string;
 };
