@@ -14,6 +14,9 @@ import passport from "passport";
 import User from "./models/User";
 import { userValidator } from "./middleware";
 import catchAsync from "./utils/catchAsync";
+import createServiceFactory from "@mapbox/mapbox-sdk/services/geocoding";
+const mbxToken = process.env.MAPBOX_API_TOKEN!;
+const geocoder = createServiceFactory({ accessToken: mbxToken });
 
 const port = process.env.PORT || 8888;
 const DB_URL = "mongodb://127.0.0.1:27017/meetpoint";
@@ -94,8 +97,20 @@ app.post(
     }
 
     const { title, description, location } = req.body;
+    const coords = await geocoder
+      .forwardGeocode({
+        query: location,
+        limit: 1,
+      })
+      .send();
     const owner = await User.findById(req.user._id);
-    const g = new Group({ title, description, location, owner });
+    const g = new Group({
+      title,
+      description,
+      location,
+      owner,
+      geometry: coords.body.features[0].geometry,
+    });
     await g.save();
     res.send(g._id);
   })

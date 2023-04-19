@@ -39,7 +39,10 @@ const seedDB = async () => {
       }),
       owner: newUser,
       location: locationString,
-      coordinates: coords,
+      geometry: {
+        type: "Point",
+        coordinates: coords,
+      },
     });
     await g.save();
   }

@@ -13,6 +13,17 @@ const groupSchema = new Schema({
   description: String,
   createdOn: { type: Date, default: Date.now },
   location: String,
+  geometry: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
   isPrivate: {
     type: Boolean,
     default: false,
