@@ -12,7 +12,7 @@ env:
   EB_APP_NAME: MeetPoint
   EB_ENV_NAME: Meetpoint-env
   S3_BUCKET_NAME: meetpoint-deployment
-  DOCKERRUN_FILE: 'Dockerrun.aws.json'
+  DOCKERRUN_FILE: "Dockerrun.aws.json"
 
 jobs:
   deploy:
