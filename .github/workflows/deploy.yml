@@ -56,5 +56,5 @@ jobs:
         run: |
           sudo apt-get install -y jq
           aws s3 cp ${{ env.DOCKERRUN_FILE }} s3://${{ env.S3_BUCKET_NAME }}/${{ github.sha }}/${{ env.DOCKERRUN_FILE }}
-          aws elasticbeanstalk create-application-version --application-name ${{ env.EB_APP_NAME }} --version-label ${{ github.sha }} --source-bundle S3Bucket=${{ env.EB_APP_NAME }}-deployment,S3Key=${{ github.sha }}/${{ env.DOCKERRUN_FILE }}
+          aws elasticbeanstalk create-application-version --application-name ${{ env.EB_APP_NAME }} --version-label ${{ github.sha }} --source-bundle S3Bucket=${{ env.S3_BUCKET_NAME }},S3Key=${{ github.sha }}/${{ env.DOCKERRUN_FILE }}
           aws elasticbeanstalk update-environment --application-name ${{ env.EB_APP_NAME }} --environment-name ${{ env.EB_ENV_NAME }} --version-label ${{ github.sha }}
