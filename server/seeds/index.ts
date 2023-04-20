@@ -5,7 +5,7 @@ import Group from "../models/Group";
 import { loremIpsum } from "lorem-ipsum";
 import User from "../models/User";
 
-mongoose.connect("mongodb://127.0.0.1:27017/meetpoint");
+mongoose.connect("mongodb://mongo:27017/meetpoint");
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));

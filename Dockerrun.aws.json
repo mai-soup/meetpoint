@@ -1,0 +1,29 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "meetpoint-server",
+      "image": "485229747515.dkr.ecr.eu-north-1.amazonaws.com/meetpoint-server",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 5000,
+          "containerPort": 5000
+        }
+      ]
+    },
+    {
+      "name": "meetpoint-client",
+      "image": "485229747515.dkr.ecr.eu-north-1.amazonaws.com/meetpoint-client",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 3000,
+          "containerPort": 3000
+        }
+      ]
+    }
+  ]
+}
