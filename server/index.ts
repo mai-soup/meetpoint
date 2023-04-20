@@ -18,8 +18,8 @@ import createServiceFactory from "@mapbox/mapbox-sdk/services/geocoding";
 const mbxToken = process.env.MAPBOX_API_TOKEN!;
 const geocoder = createServiceFactory({ accessToken: mbxToken });
 
-const port = process.env.PORT || 8888;
-const DB_URL = "mongodb://127.0.0.1:27017/meetpoint";
+const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
+const DB_URL = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/meetpoint";
 
 const app: Express = express();
 
@@ -64,7 +64,8 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:3000";
+app.use(cors({ origin: clientOrigin, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -189,6 +190,6 @@ app.get("/logout", (req, res, next) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`listening on port ${port}`);
 });

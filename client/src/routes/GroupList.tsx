@@ -12,7 +12,7 @@ const GroupList = () => {
       <GroupListItem
         key={g._id}
         title={g.title}
-        owner={g.owner}
+        owner={g.owner.displayName!}
         location={g.location}
         id={g._id}
       />

@@ -14,7 +14,7 @@ import Login from "./routes/Login.js";
 import { UsersProvider } from "./context/UsersContext.js";
 import LogOut from "./routes/LogOut.js";
 
-axios.defaults.baseURL = "http://localhost:8888";
+axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
 const router = createBrowserRouter([
