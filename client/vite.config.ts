@@ -6,6 +6,19 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: "0.0.0.0",
-    port: 3000, // change this to any desired port
+    port: 3000,
+    hmr: false,
+    // {
+    //   protocol: "ws",
+    //   host: "localhost",
+    //   port: 3000,
+    // },
+    proxy: {
+      "/api": {
+        target: "http://meetpoint-server:5000",
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ""),
+      },
+    },
   },
 });

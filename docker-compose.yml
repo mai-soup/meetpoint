@@ -3,14 +3,12 @@ version: "3.8"
 services:
   meetpoint-server:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
     environment:
       MONGO_URI: "mongodb://mongo:27017/meetpoint"
     env_file:
-      - ./.env
+      - ./server/.env
     depends_on:
       - mongo
     networks:
@@ -26,10 +24,19 @@ services:
 
   meetpoint-client:
     build:
-      context: ../client
+      context: ./client
       dockerfile: Dockerfile
+    networks:
+      - meetpoint-network
+
+  meetpoint-nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
     ports:
-      - "3000:3000"
+      - "80:80"
+    depends_on:
+      - meetpoint-client
     networks:
       - meetpoint-network
 

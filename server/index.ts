@@ -19,9 +19,34 @@ const mbxToken = process.env.MAPBOX_API_TOKEN!;
 const geocoder = createServiceFactory({ accessToken: mbxToken });
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
-const DB_URL = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/meetpoint";
+const DB_URL = process.env.MONGO_URI || "mongodb://mongo:27017/meetpoint";
 
 const app: Express = express();
+
+const allowedOrigins = [
+  "http://meetpoint-client",
+  "http://localhost",
+  "http://localhost:80",
+];
+
+app.use((req, res, next) => {
+  console.log(`Request URL: ${req.url}, Method: ${req.method}`);
+  next();
+});
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      console.log("wowzers:", origin);
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 mongoose.connect(DB_URL).then(
   () => {
@@ -64,8 +89,6 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:3000";
-app.use(cors({ origin: clientOrigin, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -186,7 +209,7 @@ app.post(
 app.get("/logout", (req, res, next) => {
   req.logout(function (err) {
     if (err) return next(err);
-    res.redirect("/");
+    res.status(200).send();
   });
 });
 

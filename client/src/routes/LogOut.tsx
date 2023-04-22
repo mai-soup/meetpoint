@@ -8,10 +8,15 @@ const LogOut = () => {
   const dispatch = useUsersDispatch();
 
   useEffect(() => {
-    axios.get("/logout").then(() => {
-      dispatch!({ type: "loggedOut" });
-      navigate("/groups");
-    });
+    axios
+      .get("/logout")
+      .then(res => {
+        console.log(res);
+      })
+      .then(() => {
+        dispatch!({ type: "loggedOut" });
+        navigate("/groups");
+      });
   }, []);
 
   return (
