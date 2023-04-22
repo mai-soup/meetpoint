@@ -26,6 +26,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+    volumes:
+      - client-build:/app/dist
     networks:
       - meetpoint-network
 
@@ -37,8 +39,13 @@ services:
       - "80:80"
     depends_on:
       - meetpoint-client
+    volumes:
+      - client-build:/usr/share/nginx/html
     networks:
       - meetpoint-network
 
 networks:
   meetpoint-network:
+
+volumes:
+  client-build:

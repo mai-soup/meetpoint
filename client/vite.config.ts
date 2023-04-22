@@ -8,11 +8,6 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 3000,
     hmr: false,
-    // {
-    //   protocol: "ws",
-    //   host: "localhost",
-    //   port: 3000,
-    // },
     proxy: {
       "/api": {
         target: "http://meetpoint-server:5000",
