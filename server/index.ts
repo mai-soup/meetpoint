@@ -29,11 +29,6 @@ const allowedOrigins = [
   "http://localhost:80",
 ];
 
-app.use((req, res, next) => {
-  console.log(`Request URL: ${req.url}, Method: ${req.method}`);
-  next();
-});
-
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -213,6 +208,13 @@ app.get("/logout", (req, res, next) => {
   });
 });
 
+let isUp = false;
+
+app.get("/health", (req, res) => {
+  return isUp ? res.status(200).send() : res.status(503).send();
+});
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`listening on port ${port}`);
+  isUp = true;
 });
