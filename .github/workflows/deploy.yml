@@ -16,6 +16,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: List files and directories
+        run: ls -la ${{ github.workspace }}
       - name: Build and push meetpoint-server
         uses: docker/build-push-action@v4
         with:
