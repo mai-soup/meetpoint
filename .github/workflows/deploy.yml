@@ -5,57 +5,33 @@ on:
     branches:
       - master
 
-env:
-  AWS_REGION: eu-north-1
-  ECR_REPOSITORY_SERVER: meetpoint-server
-  ECR_REPOSITORY_CLIENT: meetpoint-client
-  EB_APP_NAME: MeetPoint
-  EB_ENV_NAME: Meetpoint-env
-  S3_BUCKET_NAME: meetpoint-deployment
-  DOCKERRUN_FILE: "Dockerrun.aws.json"
-
 jobs:
-  deploy:
-    name: Deploy
+  docker:
     runs-on: ubuntu-latest
-    environment: production
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@aaf69d68aa3fb14c1d5a6be9ac61fe15b48453a2
-
-      - name: Build, tag, and push server image to Amazon ECR
-        run: |
-          cd server
-          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_SERVER }}:${{ github.sha }} .
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_SERVER }}:${{ github.sha }}
-
-      - name: Build, tag, and push client image to Amazon ECR
-        run: |
-          cd client
-          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_CLIENT }}:${{ github.sha }} .
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_CLIENT }}:${{ github.sha }}
-
-      - name: Update Dockerrun file with new image URIs
-        run: |
-          sed -i 's@MY_ECR_REPOSITORY_SERVER@${{ env.ECR_REPOSITORY_SERVER }}:${{ github.sha }}@' ${{ env.DOCKERRUN_FILE }}
-          sed -i 's@MY_ECR_REPOSITORY_CLIENT@${{ env.ECR_REPOSITORY_CLIENT }}:${{ github.sha }}@' ${{ env.DOCKERRUN_FILE }}
-
-      - name: Deploy to Elastic Beanstalk
-        run: |
-          sudo apt-get install -y jq
-          VERSION_LABEL=$(git rev-parse --short HEAD)_$(date +%s)
-          aws s3 cp Dockerrun.aws.json s3://$S3_BUCKET_NAME/$VERSION_LABEL/Dockerrun.aws.json
-          aws elasticbeanstalk create-application-version --application-name MeetPoint --version-label $VERSION_LABEL --source-bundle S3Bucket="$S3_BUCKET_NAME",S3Key="$VERSION_LABEL/Dockerrun.aws.json"
-          aws elasticbeanstalk update-environment --environment-name $EB_ENV_NAME --version-label $VERSION_LABEL
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push meetpoint-server
+        uses: docker/build-push-action@v4
+        with:
+          context: ./server
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/meetpoint-server:latest
+      - name: Build and push meetpoint-client
+        uses: docker/build-push-action@v4
+        with:
+          context: ./client
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/meetpoint-client:latest
+      - name: Build and push meetpoint-nginx
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile-nginx
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/meetpoint-nginx:latest

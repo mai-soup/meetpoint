@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  meetpoint-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      MONGO_URI: "mongodb://mongo:27017/meetpoint"
+    env_file:
+      - ./server/.env
+    depends_on:
+      - mongo
+    networks:
+      - meetpoint-network
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mongo:
+    image: mongo:4.4
+    container_name: meetpoint-mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - meetpoint-network
+
+  meetpoint-client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - client-build:/app/dist
+    networks:
+      - meetpoint-network
+
+  meetpoint-nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      meetpoint-client:
+        condition: service_started
+      meetpoint-server:
+        condition: service_healthy
+    volumes:
+      - client-build:/usr/share/nginx/html
+    networks:
+      - meetpoint-network
+
+networks:
+  meetpoint-network:
+
+volumes:
+  client-build:

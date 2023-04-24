@@ -1,6 +1,9 @@
 # Layer 1: Use the official Node.js image as the base image
 FROM node:19-alpine
 
+# Install curl
+RUN apk add --no-cache curl
+
 # Layer 2: Set the working directory for the app
 WORKDIR /app
 

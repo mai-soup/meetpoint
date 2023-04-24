@@ -26,6 +26,9 @@ const Signup = () => {
           user: { username: data.username, displayName: data.username },
         });
         navigate(`/groups`);
+      })
+      .catch(e => {
+        console.log("AXIOS ERR:", e);
       });
   };
 
