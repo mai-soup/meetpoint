@@ -19,19 +19,19 @@ jobs:
       - name: Build and push meetpoint-server
         uses: docker/build-push-action@v4
         with:
-          context: ./server
+          context: ${{ github.workspace }}/server
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/meetpoint-server:latest
       - name: Build and push meetpoint-client
         uses: docker/build-push-action@v4
         with:
-          context: ./client
+          context: ${{ github.workspace }}/client
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/meetpoint-client:latest
       - name: Build and push meetpoint-nginx
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ${{ github.workspace }}
           file: ./Dockerfile-nginx
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/meetpoint-nginx:latest
