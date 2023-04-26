@@ -19,7 +19,15 @@ const mbxToken = process.env.MAPBOX_API_TOKEN!;
 const geocoder = createServiceFactory({ accessToken: mbxToken });
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
-const DB_URL = process.env.MONGO_URI || "mongodb://mongo:27017/meetpoint";
+
+// default fallbacks in case the env variables werent set, should throw an error.
+const DB_USERNAME = process.env.DB_USERNAME || "default_username";
+const DB_PASSWORD = process.env.DB_PASSWORD || "default_password";
+const DB_DATABASE = process.env.DB_DATABASE || "default_database";
+
+const DB_URL =
+  process.env.MONGO_URI ||
+  `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.gwghdfx.mongodb.net/${DB_DATABASE}?retryWrites=true&w=majority`;
 
 const app: Express = express();
 
