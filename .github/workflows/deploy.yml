@@ -24,12 +24,6 @@ jobs:
           context: ${{ github.workspace }}/server
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/meetpoint-server:latest
-      - name: Build and push meetpoint-client
-        uses: docker/build-push-action@v4
-        with:
-          context: ${{ github.workspace }}/client
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/meetpoint-client:latest
       - name: Build and push meetpoint-nginx
         uses: docker/build-push-action@v4
         with:

@@ -11,12 +11,8 @@ services:
       success_threshold: 1
       failure_threshold: 5
 
-  - name: meetpoint-client
-    image: maisoup/meetpoint-client:latest
-
   - name: meetpoint-nginx
     image: maisoup/meetpoint-nginx:latest
     http_port: 80
     depends_on:
       - meetpoint-server
-      - meetpoint-client
