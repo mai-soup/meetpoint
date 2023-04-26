@@ -16,15 +16,6 @@ services:
       retries: 5
       start_period: 60s
 
-  meetpoint-client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    volumes:
-      - client-build:/app/dist
-    networks:
-      - meetpoint-network
-
   meetpoint-nginx:
     build:
       context: .
@@ -32,17 +23,9 @@ services:
     ports:
       - "80:80"
     depends_on:
-      meetpoint-client:
-        condition: service_started
-      meetpoint-server:
-        condition: service_healthy
-    volumes:
-      - client-build:/usr/share/nginx/html
+      - meetpoint-server
     networks:
       - meetpoint-network
 
 networks:
   meetpoint-network:
-
-volumes:
-  client-build:
