@@ -2,17 +2,30 @@
 name: meetpoint-app
 services:
   - name: meetpoint-server
-    image: maisoup/meetpoint-server:latest
-    health_check:
-      http_path: /health
-      initial_delay: 60
-      timeout_seconds: 10
-      period_seconds: 30
-      success_threshold: 1
-      failure_threshold: 5
-
+    image:
+      registry_type: DOCKER_HUB
+      repository: maisoup/meetpoint-server
+      tag: latest
   - name: meetpoint-nginx
-    image: maisoup/meetpoint-nginx:latest
+    image:
+      registry_type: DOCKER_HUB
+      repository: maisoup/meetpoint-nginx
+      tag: latest
     http_port: 80
-    depends_on:
-      - meetpoint-server
+    envs:
+      - key: SERVER_API_URL
+        value: http://meetpoint-server:5000
+ingress:
+  rules:
+    - match:
+        path:
+          prefix: "/"
+      component:
+        name: meetpoint-nginx
+        preserve_path_prefix: false
+    - match:
+        path:
+          prefix: "/api"
+      component:
+        name: meetpoint-server
+        preserve_path_prefix: false
