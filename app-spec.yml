@@ -1,0 +1,22 @@
+# For DigitalOcean App Platform
+name: meetpoint-app
+services:
+  - name: meetpoint-server
+    image: maisoup/meetpoint-server:latest
+    health_check:
+      http_path: /health
+      initial_delay: 60
+      timeout_seconds: 10
+      period_seconds: 30
+      success_threshold: 1
+      failure_threshold: 5
+
+  - name: meetpoint-client
+    image: maisoup/meetpoint-client:latest
+
+  - name: meetpoint-nginx
+    image: maisoup/meetpoint-nginx:latest
+    http_port: 80
+    depends_on:
+      - meetpoint-server
+      - meetpoint-client
