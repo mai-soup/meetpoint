@@ -7,7 +7,6 @@ if (process.env.NODE_ENV !== "production") {
 import express, { Express, NextFunction, Request, Response } from "express";
 import mongoose, { ObjectId } from "mongoose";
 import Group from "./models/Group";
-import cors from "cors";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
@@ -30,26 +29,6 @@ const DB_URL =
   `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.gwghdfx.mongodb.net/${DB_DATABASE}?retryWrites=true&w=majority`;
 
 const app: Express = express();
-
-const allowedOrigins = [
-  "http://meetpoint-client",
-  "http://localhost",
-  "http://localhost:80",
-];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      console.log("wowzers:", origin);
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
 
 mongoose.connect(DB_URL).then(
   () => {
