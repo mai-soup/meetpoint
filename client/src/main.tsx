@@ -14,7 +14,7 @@ import Login from "./routes/Login.js";
 import { UsersProvider } from "./context/UsersContext.js";
 import LogOut from "./routes/LogOut.js";
 
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
 axios.defaults.withCredentials = true;
 
 const router = createBrowserRouter([
