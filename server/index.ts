@@ -33,7 +33,7 @@ const app: Express = express();
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://meetpoint-ainmq.ondigitalocean.app/",
+  "https://meetpoint-ainmq.ondigitalocean.app",
 ];
 
 app.use(
