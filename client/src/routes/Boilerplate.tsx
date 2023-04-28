@@ -19,9 +19,14 @@ const Boilerplate = () => {
           <Button>Create Group</Button>
         </Link> */}
         {user?.username ? (
-          <Link to="/logout">
-            <Button tertiary>Log Out</Button>
-          </Link>
+          <>
+            <Link to="/groups/create">
+              <Button>Create Group</Button>
+            </Link>
+            <Link to="/logout">
+              <Button tertiary>Log Out</Button>
+            </Link>
+          </>
         ) : (
           <Link to="/login">
             <Button tertiary>Log In</Button>

@@ -8,7 +8,6 @@ const CreateGroup = () => {
   const { register, handleSubmit } = useForm<GroupFormData>({
     defaultValues: {
       title: "",
-      owner: "",
       location: "",
       description: "",
     },
@@ -50,14 +49,6 @@ const CreateGroup = () => {
           <input
             type="text"
             {...register("location", { required: true })}
-            className="reset"
-          />
-        </label>
-        <label>
-          Owner
-          <input
-            type="text"
-            {...register("owner", { required: true })}
             className="reset"
           />
         </label>
