@@ -42,6 +42,28 @@ const Signup = () => {
       });
   };
 
+  const passwordValidation = (value: string) => {
+    if (!/(?=.*[a-z])/.test(value)) {
+      return "Password must contain at least one lowercase letter.";
+    }
+    if (!/(?=.*[A-Z])/.test(value)) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!/(?=.*[0-9])/.test(value)) {
+      return "Password must contain at least one digit.";
+    }
+    if (!/(?=.*[!@#\$%\^&\*])/.test(value)) {
+      return "Password must contain at least one special character.";
+    }
+    if (!/(?=.{10,})/.test(value)) {
+      return "Password must be at least 10 characters long.";
+    }
+    if (/(.)\1{2,}/.test(value)) {
+      return "Password must not have 3 or more repeating characters in sequence.";
+    }
+    return true;
+  };
+
   return (
     <div>
       <h1>Sign Up</h1>
@@ -58,9 +80,15 @@ const Signup = () => {
           Password
           <input
             type="password"
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: true,
+              validate: passwordValidation,
+            })}
             className="reset"
           />
+          {errors.password && (
+            <ErrorText className="mb-4">{errors.password.message}</ErrorText>
+          )}
         </label>
         {errors.root?.serverError && (
           <ErrorText className="mb-4">
