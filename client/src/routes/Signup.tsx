@@ -4,10 +4,16 @@ import axios from "axios";
 import Button from "../components/Button";
 import AuthFormData from "../types/AuthFormData";
 import { useUsersDispatch } from "../context/UsersContext";
+import ErrorText from "../components/ErrorText";
 
 const Signup = () => {
   const dispatch = useUsersDispatch();
-  const { register, handleSubmit } = useForm<AuthFormData>({
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<AuthFormData>({
     defaultValues: {
       username: "",
       password: "",
@@ -29,7 +35,7 @@ const Signup = () => {
       })
       .catch(e => {
         if (e.response.status == 422) {
-          console.log(e.response.data.error);
+          setError("root.serverError", { message: e.response.data.error });
         } else {
           console.log("AXIOS ERR:", e);
         }
@@ -49,13 +55,18 @@ const Signup = () => {
           />
         </label>
         <label>
-          password
+          Password
           <input
             type="password"
             {...register("password", { required: true })}
             className="reset"
           />
         </label>
+        {errors.root?.serverError && (
+          <ErrorText className="mb-4">
+            {errors.root.serverError.message}
+          </ErrorText>
+        )}
         <Button submit>Submit</Button>
       </form>
     </div>
