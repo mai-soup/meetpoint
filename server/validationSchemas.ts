@@ -45,7 +45,6 @@ export const meetupValidationSchema = Joi.object({
 export const groupValidationSchema = Joi.object({
   group: Joi.object({
     title: Joi.string().required().escapeHTML(),
-    owner: Joi.string().required().escapeHTML(),
     description: Joi.string().required().escapeHTML(),
     location: Joi.string().required().escapeHTML(),
     isPrivate: Joi.boolean().falsy(),

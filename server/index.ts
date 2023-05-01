@@ -14,9 +14,7 @@ import passport from "passport";
 import User from "./models/User";
 import { userValidator } from "./middleware";
 import catchAsync from "./utils/catchAsync";
-import createServiceFactory from "@mapbox/mapbox-sdk/services/geocoding";
-const mbxToken = process.env.MAPBOX_API_TOKEN!;
-const geocoder = createServiceFactory({ accessToken: mbxToken });
+import geocoder from "./utils/geocoder";
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
 
@@ -32,14 +30,13 @@ const DB_URL =
 const app: Express = express();
 
 const allowedOrigins = [
-  "http://localhost:3000",
+  "http://localhost:5173",
   "https://meetpoint-ainmq.ondigitalocean.app",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      console.log("wowzers:", origin);
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {

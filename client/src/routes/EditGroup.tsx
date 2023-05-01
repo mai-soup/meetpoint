@@ -45,14 +45,6 @@ const EditGroup = () => {
             className="reset"
           />
         </label>
-        <label>
-          Owner
-          <input
-            type="text"
-            {...register("owner", { required: true })}
-            className="reset"
-          />
-        </label>
         <Button submit>Submit</Button>
       </form>
     </div>

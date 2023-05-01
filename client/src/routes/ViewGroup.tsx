@@ -44,7 +44,7 @@ const ViewGroup = () => {
             <div className="mb-2">
               <p className="text-lg font-bold">{group.title}</p>
               <p className="mt-1 text-sm font-medium text-light-grey md:mt-2">
-                By {group.owner.displayName}
+                By {group.owner.displayName || group.owner.username}
               </p>
             </div>
             <div className="flex flex-row-reverse md:mt-2 lg:mt-0">
