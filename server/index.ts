@@ -15,6 +15,7 @@ import User from "./models/User";
 import { userValidator } from "./middleware";
 import catchAsync from "./utils/catchAsync";
 import geocoder from "./utils/geocoder";
+import owasp from "owasp-password-strength-test";
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
 
@@ -177,6 +178,12 @@ app.post(
   userValidator,
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { username, displayName, password } = req.body.user;
+    const passwordCheck = owasp.test(password);
+
+    if (!passwordCheck.strong) {
+      return res.status(422).send({ error: "Password is weak." });
+    }
+
     const user = new User({
       username,
       displayName,
@@ -186,7 +193,7 @@ app.post(
     req.login(newUser, err => {
       if (err) return next(err);
 
-      return res.send({ username });
+      return res.status(200).send({ username });
     });
   })
 );

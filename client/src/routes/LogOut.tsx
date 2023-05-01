@@ -11,7 +11,7 @@ const LogOut = () => {
     axios
       .get("/logout")
       .then(res => {
-        console.log(res);
+        // console.log(res);
       })
       .then(() => {
         dispatch!({ type: "loggedOut" });

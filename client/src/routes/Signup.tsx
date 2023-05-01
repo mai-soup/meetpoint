@@ -28,7 +28,11 @@ const Signup = () => {
         navigate(`/groups`);
       })
       .catch(e => {
-        console.log("AXIOS ERR:", e);
+        if (e.response.status == 422) {
+          console.log(e.response.data.error);
+        } else {
+          console.log("AXIOS ERR:", e);
+        }
       });
   };
 
