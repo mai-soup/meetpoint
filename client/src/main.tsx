@@ -13,6 +13,7 @@ import Signup from "./routes/Signup.js";
 import Login from "./routes/Login.js";
 import { UsersProvider } from "./context/UsersContext.js";
 import LogOut from "./routes/LogOut.js";
+import EditProfile from "./routes/EditProfile.js";
 
 axios.defaults.baseURL =
   import.meta.env.VITE_APP_API_URL || "http://localhost:5000";
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { path: "/signup", element: <Signup /> },
       { path: "/login", element: <Login /> },
       { path: "/logout", element: <LogOut /> },
+      { path: "/profile/edit", element: <EditProfile /> },
     ],
   },
 ]);

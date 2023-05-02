@@ -154,11 +154,18 @@ app.put(
   catchAsync(async (req: Request, res: Response) => {
     const groupId = req.params.groupId;
     const { title, owner, description, location } = req.body;
+    const coords = await geocoder
+      .forwardGeocode({
+        query: location,
+        limit: 1,
+      })
+      .send();
     await Group.findByIdAndUpdate(groupId, {
       title,
       owner,
       description,
       location,
+      geometry: coords.body.features[0].geometry,
     });
     res.status(200).send();
   })
@@ -218,6 +225,50 @@ app.get("/logout", (req, res, next) => {
     res.status(200).send();
   });
 });
+
+app.get(
+  "/loggedInUser",
+  catchAsync(async (req: Request, res: Response) => {
+    if (!req.user) {
+      return res.status(401).send();
+    }
+
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    const { ...userWithoutSensitiveData } = user._doc;
+
+    return res.status(200).send({ user });
+  })
+);
+
+app.put(
+  "/loggedInUser",
+  catchAsync(async (req: Request, res: Response) => {
+    if (!req.user) {
+      return res.status(401).send();
+    }
+
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    const { displayName, location } = req.body;
+
+    user.displayName = displayName;
+    user.location = location;
+    await user
+      .save()
+      .then((savedUser: object) => res.status(200).send({ savedUser }));
+  })
+);
 
 let isUp = false;
 
