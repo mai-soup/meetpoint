@@ -225,7 +225,9 @@ app.get("/health", (req, res) => {
   return isUp ? res.status(200).send() : res.status(503).send();
 });
 
-app.listen(port, "0.0.0.0", () => {
+const server = app.listen(port, "0.0.0.0", () => {
   console.log(`listening on port ${port}`);
   isUp = true;
 });
+
+export { app, server, store };
