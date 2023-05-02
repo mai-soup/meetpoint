@@ -219,6 +219,22 @@ app.get("/logout", (req, res, next) => {
   });
 });
 
+app.get(
+  "/users/:userId",
+  catchAsync(async (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    const { ...userWithoutSensitiveData } = user._doc;
+
+    return res.status(200).send({ user });
+  })
+);
+
 let isUp = false;
 
 app.get("/health", (req, res) => {
