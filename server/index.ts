@@ -154,11 +154,18 @@ app.put(
   catchAsync(async (req: Request, res: Response) => {
     const groupId = req.params.groupId;
     const { title, owner, description, location } = req.body;
+    const coords = await geocoder
+      .forwardGeocode({
+        query: location,
+        limit: 1,
+      })
+      .send();
     await Group.findByIdAndUpdate(groupId, {
       title,
       owner,
       description,
       location,
+      geometry: coords.body.features[0].geometry,
     });
     res.status(200).send();
   })
