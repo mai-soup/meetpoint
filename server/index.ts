@@ -220,9 +220,13 @@ app.get("/logout", (req, res, next) => {
 });
 
 app.get(
-  "/users/:userId",
+  "/loggedInUser",
   catchAsync(async (req: Request, res: Response) => {
-    const userId = req.params.userId;
+    if (!req.user) {
+      return res.status(401).send();
+    }
+
+    const userId = req.user._id;
     const user = await User.findById(userId);
 
     if (!user) {
@@ -232,6 +236,30 @@ app.get(
     const { ...userWithoutSensitiveData } = user._doc;
 
     return res.status(200).send({ user });
+  })
+);
+
+app.put(
+  "/loggedInUser",
+  catchAsync(async (req: Request, res: Response) => {
+    if (!req.user) {
+      return res.status(401).send();
+    }
+
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    const { displayName, location } = req.body;
+
+    user.displayName = displayName;
+    user.location = location;
+    await user
+      .save()
+      .then((savedUser: object) => res.status(200).send({ savedUser }));
   })
 );
 

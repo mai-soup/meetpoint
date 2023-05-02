@@ -7,10 +7,11 @@ import UserFormData from "../types/UserFormData";
 const EditProfile = () => {
   const { register, handleSubmit } = useForm<UserFormData>({
     defaultValues: async () =>
-      axios.get(`/user/${userId}`).then(res => res.data),
+      axios.get(`/loggedInUser`).then(res => res.data.user),
   });
   const onSubmit = (data: UserFormData) => {
-    axios.put(`/user/${userId}`, data).then(() => {
+    axios.put(`/loggedInUser`, data).then(res => {
+      console.log(res.data);
       navigate(`/profile`);
     });
   };
