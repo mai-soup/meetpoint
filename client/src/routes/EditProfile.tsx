@@ -15,7 +15,7 @@ const EditProfile = () => {
       navigate(`/profile`);
     });
   };
-  const { userId } = useParams();
+
   const navigate = useNavigate();
 
   return (
