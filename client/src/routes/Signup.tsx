@@ -4,10 +4,16 @@ import axios from "axios";
 import Button from "../components/Button";
 import AuthFormData from "../types/AuthFormData";
 import { useUsersDispatch } from "../context/UsersContext";
+import ErrorText from "../components/ErrorText";
 
 const Signup = () => {
   const dispatch = useUsersDispatch();
-  const { register, handleSubmit } = useForm<AuthFormData>({
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<AuthFormData>({
     defaultValues: {
       username: "",
       password: "",
@@ -28,8 +34,34 @@ const Signup = () => {
         navigate(`/groups`);
       })
       .catch(e => {
-        console.log("AXIOS ERR:", e);
+        if (e.response.status == 422) {
+          setError("root.serverError", { message: e.response.data.error });
+        } else {
+          console.log("AXIOS ERR:", e);
+        }
       });
+  };
+
+  const passwordValidation = (value: string) => {
+    if (!/(?=.*[a-z])/.test(value)) {
+      return "Password must contain at least one lowercase letter.";
+    }
+    if (!/(?=.*[A-Z])/.test(value)) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!/(?=.*[0-9])/.test(value)) {
+      return "Password must contain at least one digit.";
+    }
+    if (!/(?=.*[!@#\$%\^&\*])/.test(value)) {
+      return "Password must contain at least one special character.";
+    }
+    if (!/(?=.{10,})/.test(value)) {
+      return "Password must be at least 10 characters long.";
+    }
+    if (/(.)\1{2,}/.test(value)) {
+      return "Password must not have 3 or more repeating characters in sequence.";
+    }
+    return true;
   };
 
   return (
@@ -45,13 +77,24 @@ const Signup = () => {
           />
         </label>
         <label>
-          password
+          Password
           <input
             type="password"
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: true,
+              validate: passwordValidation,
+            })}
             className="reset"
           />
+          {errors.password && (
+            <ErrorText className="mb-4">{errors.password.message}</ErrorText>
+          )}
         </label>
+        {errors.root?.serverError && (
+          <ErrorText className="mb-4">
+            {errors.root.serverError.message}
+          </ErrorText>
+        )}
         <Button submit>Submit</Button>
       </form>
     </div>
