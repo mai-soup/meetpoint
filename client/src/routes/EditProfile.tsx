@@ -10,10 +10,25 @@ const EditProfile = () => {
       axios.get(`/loggedInUser`).then(res => res.data.user),
   });
   const onSubmit = (data: UserFormData) => {
-    axios.put(`/loggedInUser`, data).then(res => {
-      console.log(res.data);
-      navigate(`/profile`);
-    });
+    const formData = new FormData();
+    formData.append("displayName", data.displayName);
+    formData.append("location", data.location);
+
+    const avatarFile = data.avatar.item(0);
+    if (avatarFile) {
+      formData.append("avatar", avatarFile);
+    }
+
+    axios
+      .put(`/loggedInUser`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(res => {
+        console.log(res.data);
+        navigate(`/profile`);
+      });
   };
 
   const navigate = useNavigate();
@@ -36,6 +51,15 @@ const EditProfile = () => {
             type="text"
             {...register("location", { required: true })}
             className="reset"
+          />
+        </label>
+        <label>
+          Avatar
+          <input
+            type="file"
+            {...register("avatar")}
+            className="reset"
+            multiple={false}
           />
         </label>
         <Button submit>Submit</Button>

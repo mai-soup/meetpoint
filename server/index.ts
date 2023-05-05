@@ -16,6 +16,9 @@ import { userValidator } from "./middleware";
 import catchAsync from "./utils/catchAsync";
 import geocoder from "./utils/geocoder";
 import owasp from "owasp-password-strength-test";
+import multer from "multer";
+import { storage } from "./utils/cloudinary";
+const upload = multer({ storage });
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
 
@@ -240,14 +243,13 @@ app.get(
       return res.status(404).send({ error: "User not found" });
     }
 
-    const { ...userWithoutSensitiveData } = user._doc;
-
     return res.status(200).send({ user });
   })
 );
 
 app.put(
   "/loggedInUser",
+  upload.single("avatar"),
   catchAsync(async (req: Request, res: Response) => {
     if (!req.user) {
       return res.status(401).send();
@@ -264,6 +266,7 @@ app.put(
 
     user.displayName = displayName;
     user.location = location;
+    user.avatar = { url: req.file?.path, filename: req.file?.filename };
     await user
       .save()
       .then((savedUser: object) => res.status(200).send({ savedUser }));

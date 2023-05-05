@@ -6,7 +6,7 @@ const ImageSchema = new Schema({
     type: String,
     required: true,
   },
-  original_url: {
+  url: {
     type: String,
     required: true,
   },
