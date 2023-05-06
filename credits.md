@@ -1,0 +1,1 @@
+- Default user icon by [Becris](https://www.flaticon.com/authors/becris)
