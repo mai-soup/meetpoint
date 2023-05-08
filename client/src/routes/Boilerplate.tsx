@@ -20,8 +20,8 @@ const Boilerplate = () => {
         </Link> */}
         {user?.username ? (
           <>
-            <Link to="/profile/edit">
-              <Button secondary>Edit Profile</Button>
+            <Link to="/profile">
+              <Button secondary>View Profile</Button>
             </Link>
             <Link to="/groups/create">
               <Button>Create Group</Button>

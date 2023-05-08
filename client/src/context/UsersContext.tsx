@@ -3,9 +3,11 @@ import {
   ReactNode,
   createContext,
   useContext,
+  useEffect,
   useReducer,
 } from "react";
 import { User, UserAction } from "../types/User";
+import axios from "axios";
 
 type UsersContextType = User | null;
 type UsersDispatchContextType = Dispatch<UserAction> | null;
@@ -18,6 +20,10 @@ export const useUsersDispatch = () => useContext(UsersDispatchContext);
 
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
   const [user, dispatch] = useReducer(userReducer, initialUser);
+
+  useEffect(() => {
+    checkUserSession(dispatch);
+  }, [dispatch]);
 
   return (
     <UsersContext.Provider value={user}>
@@ -48,4 +54,17 @@ function userReducer(user: User, action: UserAction): User {
 const initialUser: User = {
   username: null,
   displayName: null,
+};
+
+const checkUserSession = async (dispatch: Dispatch<UserAction>) => {
+  try {
+    const response = await axios.get("/loggedInUser");
+    if (response.status === 200 && response.data.user) {
+      dispatch({ type: "loggedIn", user: response.data.user });
+    } else {
+      dispatch({ type: "loggedOut" });
+    }
+  } catch (error) {
+    dispatch({ type: "loggedOut" });
+  }
 };

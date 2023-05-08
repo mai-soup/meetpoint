@@ -16,6 +16,9 @@ import { userValidator } from "./middleware";
 import catchAsync from "./utils/catchAsync";
 import geocoder from "./utils/geocoder";
 import owasp from "owasp-password-strength-test";
+import multer from "multer";
+import { storage, cloudinary } from "./utils/cloudinary";
+const upload = multer({ storage });
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
 
@@ -240,16 +243,16 @@ app.get(
       return res.status(404).send({ error: "User not found" });
     }
 
-    const { ...userWithoutSensitiveData } = user._doc;
-
     return res.status(200).send({ user });
   })
 );
 
 app.put(
   "/loggedInUser",
+  upload.single("avatar"),
   catchAsync(async (req: Request, res: Response) => {
-    if (!req.user) {
+    // TODO: refactor into its own middleware
+    if (!req.isAuthenticated || !req.user) {
       return res.status(401).send();
     }
 
@@ -260,10 +263,23 @@ app.put(
       return res.status(404).send({ error: "User not found" });
     }
 
-    const { displayName, location } = req.body;
+    const { displayName, location, shouldRemoveAvatar } = req.body;
+    const avatar = req.file;
 
     user.displayName = displayName;
     user.location = location;
+
+    if (avatar || shouldRemoveAvatar) {
+      cloudinary.uploader.destroy(user.avatar.filename);
+    }
+
+    if (avatar) {
+      user.avatar = { url: avatar.path, filename: avatar.filename };
+      console.log(avatar);
+    } else if (shouldRemoveAvatar) {
+      delete user.avatar;
+    }
+
     await user
       .save()
       .then((savedUser: object) => res.status(200).send({ savedUser }));

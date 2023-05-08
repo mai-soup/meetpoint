@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Group from "../types/Group";
 import GroupListItem from "../components/GroupListItem";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const GroupList = () => {
   const [groups, setGroups] = useState([]);
@@ -31,7 +32,7 @@ const GroupList = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      {groups.length == 0 ? <p>Loading data...</p> : createGroupList()}
+      {groups.length == 0 ? <LoadingIndicator /> : createGroupList()}
     </div>
   );
 };
