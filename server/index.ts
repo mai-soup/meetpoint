@@ -286,6 +286,23 @@ app.put(
   })
 );
 
+app.get(
+  "/publicUser/:userId",
+  catchAsync(async (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    const user = await User.findById(
+      userId,
+      "username displayName joinedGroups ownedGroups avatar"
+    );
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    return res.status(200).send({ user });
+  })
+);
+
 let isUp = false;
 
 app.get("/health", (req, res) => {
